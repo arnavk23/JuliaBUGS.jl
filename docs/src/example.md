@@ -314,7 +314,7 @@ For example:
     using JuliaBUGS, LogDensityProblems, LogDensityProblemsAD, AbstractMCMC, AdvancedHMC, MCMCChains, ReverseDiff # also other packages one may need
 
     # Define the functions to use
-    # Use `@register_primitive` to register the functions to use in the model
+    # Use `@bugs_primitive` to register the functions to use in the model
 
     # Distributed can handle data dependencies in some cases, for more detail, see https://docs.julialang.org/en/v1/manual/distributed-computing/
 
