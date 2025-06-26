@@ -24,15 +24,20 @@ function AbstractMCMC.bundle_samples(
     thinning=1,
     kwargs...,
 )
+    using DynamicPPL: get_transform_info, invlink
+
     stats_names = collect(keys(merge((; lp=ts[1].z.ℓπ.value), AdvancedHMC.stat(ts[1]))))
     stats_values = [
         vcat([ts[i].z.ℓπ.value..., collect(values(AdvancedHMC.stat(ts[i])))...]) for
         i in eachindex(ts)
     ]
 
+    trans = get_transform_info(logdensitymodel.logdensity)
+    param_vals = [invlink(trans, t.z) for t in ts]
+
     return JuliaBUGS.gen_chains(
         logdensitymodel,
-        [t.z.θ for t in ts],
+        param_vals,
         stats_names,
         stats_values;
         discard_initial=discard_initial,
